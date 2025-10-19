@@ -90,7 +90,6 @@ void _cs149_vmult_int(__cs149_vec_int &vecResult, __cs149_vec_int &veca, __cs149
 void _cs149_vdiv_float(__cs149_vec_float &vecResult, __cs149_vec_float &veca, __cs149_vec_float &vecb, __cs149_mask &mask);
 void _cs149_vdiv_int(__cs149_vec_int &vecResult, __cs149_vec_int &veca, __cs149_vec_int &vecb, __cs149_mask &mask);
 
-
 // Return calculation of absolute value abs(veca) if vector lane active
 //  otherwise keep the old value
 void _cs149_vabs_float(__cs149_vec_float &vecResult, __cs149_vec_float &veca, __cs149_mask &mask);
