@@ -10,7 +10,9 @@ PPM_CXX=$(COMMONDIR)/ppm.cpp
 PPM_OBJ=$(addprefix $(OBJDIR)/, $(subst $(COMMONDIR)/,, $(PPM_CXX:.cpp=.o)))
 
 
-default: $(APP_NAME)
+all: $(APP_NAME)
+
+default: all
 
 .PHONY: dirs clean
 
