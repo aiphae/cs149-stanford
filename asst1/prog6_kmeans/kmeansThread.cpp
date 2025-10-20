@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <thread>
+#include <chrono>
 
 #include "CycleTimer.h"
 
@@ -65,27 +66,20 @@ double dist(double *x, double *y, int nDim) {
  * Assigns each data point to its "closest" cluster centroid.
  */
 void computeAssignments(WorkerArgs *const args) {
-  double *minDist = new double[args->M];
-  
-  // Initialize arrays
-  for (int m =0; m < args->M; m++) {
-    minDist[m] = 1e30;
-    args->clusterAssignments[m] = -1;
-  }
+  for (int m = args->start; m < args->end; m++) {
+    double minDist = 1e30;
+    int minK = -1;
 
-  // Assign datapoints to closest centroids
-  for (int k = args->start; k < args->end; k++) {
-    for (int m = 0; m < args->M; m++) {
+    for (int k = 0; k < args->K; k++) {
       double d = dist(&args->data[m * args->N],
                       &args->clusterCentroids[k * args->N], args->N);
-      if (d < minDist[m]) {
-        minDist[m] = d;
-        args->clusterAssignments[m] = k;
+      if (d < minDist) {
+        minDist = d;
+        minK = k;
       }
     }
+    args->clusterAssignments[m] = minK;
   }
-
-  delete[] minDist;
 }
 
 /**
@@ -180,6 +174,10 @@ void kMeansThread(double *data, double *clusterCentroids, int *clusterAssignment
 
   // The WorkerArgs array is used to pass inputs to and return output from
   // functions.
+
+  const int numThreads = std::thread::hardware_concurrency();
+  std::thread threads[numThreads];
+  WorkerArgs threadArgs[numThreads];
   WorkerArgs args;
   args.data = data;
   args.clusterCentroids = clusterCentroids;
@@ -203,12 +201,23 @@ void kMeansThread(double *data, double *clusterCentroids, int *clusterAssignment
       prevCost[k] = currCost[k];
     }
 
-    // Setup args struct
+    int range = M / numThreads;
+    for (int i = 0; i < numThreads; i++) {
+      threadArgs[i] = args;
+      threadArgs[i].start = i * range;
+      threadArgs[i].end = (i == numThreads - 1) ? M : (i + 1) * range;
+      threads[i] = std::thread(computeAssignments, &threadArgs[i]);
+    }
+    for (int i = 0; i < numThreads; i++) {
+      threads[i].join();
+    }
+
     args.start = 0;
     args.end = K;
-
-    computeAssignments(&args);
     computeCentroids(&args);
+
+    args.start = 0;
+    args.end = K;
     computeCost(&args);
 
     iter++;
