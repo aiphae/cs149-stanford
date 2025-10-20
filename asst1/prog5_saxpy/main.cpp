@@ -19,7 +19,7 @@ toGFLOPS(int ops, float sec) {
 }
 
 static void verifyResult(int N, float* result, float* gold) {
-    for (int i=0; i<N; i++) {
+    for (int i = 0; i < N; i++) {
         if (result[i] != gold[i]) {
             printf("Error: [%d] Got %f expected %f\n", i, result[i], gold[i]);
         }
