@@ -10,20 +10,23 @@ extern void mandelbrotSerial(
     int width, int height,
     int startRow, int numRows,
     int maxIterations,
-    int output[]);
+    int output[]
+);
 
 extern void mandelbrotThread(
     int numThreads,
     float x0, float y0, float x1, float y1,
     int width, int height,
     int maxIterations,
-    int output[]);
+    int output[]
+);
 
 extern void writePPMImage(
     int* data,
     int width, int height,
     const char *filename,
-    int maxIterations);
+    int maxIterations
+);
 
 bool verifyResult (int *gold, int *result, int width, int height) {
     int i, j;

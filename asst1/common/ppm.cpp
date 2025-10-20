@@ -4,11 +4,11 @@
 #include <algorithm>
 
 void writePPMImage(
-    const int* data,
-    const int width,
-    const int height,
+    int* data,
+    int width,
+    int height,
     const char *filename,
-    const int maxIterations
+    int maxIterations
 ) {
     FILE *fp = fopen(filename, "wb");
 
