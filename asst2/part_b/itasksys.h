@@ -45,7 +45,6 @@ class ITaskSystem {
           num_total_tasks, but with a dependency on prior launched
           tasks.
 
-
           The task runtime must complete execution of the tasks
           associated with all bulk task launches referenced in the
           array `deps` before beginning execution of *any* task in
@@ -54,8 +53,8 @@ class ITaskSystem {
           The caller must invoke sync() to guarantee completion of the
           tasks in this bulk task launch.
  
-          Returns an identifer that can be used in subsequent calls to
-          runAsnycWithDeps() to specify a dependency of some future
+          Returns an identifier that can be used in subsequent calls to
+          runAsyncWithDeps() to specify a dependency of some future
           bulk task launch on this bulk task launch.
          */
         virtual TaskID runAsyncWithDeps(IRunnable* runnable, int num_total_tasks,
