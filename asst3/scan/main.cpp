@@ -6,9 +6,9 @@
 
 #include "CycleTimer.h"
 
-double cudaFindRepeats(int *input, int length, int *output, int *output_length); 
-double cudaScan(int* start, int* end, int* resultarray);
-double cudaScanThrust(int* start, int* end, int* resultarray);
+double cudaFindRepeats(const int *input, const int length, int *output, int *output_length);
+double cudaScan(const int* in_array, const int* end, int* result_array);
+double cudaScanThrust(const int* in_array, const int* end, int* result_array);
 void printCudaInfo();
 
 
